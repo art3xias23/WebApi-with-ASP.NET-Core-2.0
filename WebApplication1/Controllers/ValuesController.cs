@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -19,16 +20,20 @@ namespace WebApplication1.Controllers
         }
 
         // GET: api/Values/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet("{id:int}")]
+        public string Get(int id, string query)
         {
-            return $"value {id}";
+            return $"value {id}, query = {query}";
         }
         
         // POST: api/Values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody]Value value)
         {
+            if (!ModelState.IsValid)
+            {
+                throw new InvalidOperationException("Invalid");
+            }
         }
         
         // PUT: api/Values/5
@@ -41,6 +46,13 @@ namespace WebApplication1.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        public class Value
+        {
+            public int Id { get; set; }
+            [MinLength(3)]
+            public string Text { get; set; }
         }
     }
 }
