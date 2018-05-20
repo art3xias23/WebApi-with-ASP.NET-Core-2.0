@@ -20,20 +20,24 @@ namespace WebApplication1.Controllers
         }
 
         // GET: api/Values/5
-        [HttpGet("{id:int}")]
-        public string Get(int id, string query)
+        [HttpGet("{id}")]
+        public IActionResult Get(int id, string query)
         {
-            return $"value {id}, query = {query}";
+            return Ok(new Value { Id = id, Text = "VAlue" + id });
         }
-        
+
         // POST: api/Values
         [HttpPost]
-        public void Post([FromBody]Value value)
+        public IActionResult Post([FromBody]Value value)
+
         {
             if (!ModelState.IsValid)
             {
-                throw new InvalidOperationException("Invalid");
+                return BadRequest(ModelState);
             }
+
+            //save the value to the database
+            return CreatedAtAction("Get", new { value.Id }, value );
         }
         
         // PUT: api/Values/5
