@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication1.Controllers
 {
-    [Produces("application/json")]
+    [Produces("application/json", "application/xml")]
+    
     [Route("api/Values")]
     public class ValuesController : Controller
     {
